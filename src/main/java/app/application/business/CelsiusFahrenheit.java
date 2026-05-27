@@ -10,6 +10,6 @@ public class CelsiusFahrenheit {
     @Inject
     ConversionService conversionService;
     public float execute(CelsiusCommand command) {
-        return conversionService.conversionCelsiusFahrenheit(command.celsius());
+        return conversionService.conversionCelsiusFahrenheit(command);
     }
 }
