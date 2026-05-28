@@ -1,10 +1,13 @@
 package app.infrastructure.expose.web;
 
+import app.application.business.CelsiusFahrenheit;
+import app.application.business.FahrenheitCelsius;
+import app.application.business.KilometerMilla;
+import app.application.business.MillaKilometer;
 import app.application.model.CelsiusCommand;
 import app.application.model.FahrenheitCommand;
 import app.application.model.KilometerCommand;
 import app.application.model.MillaCommand;
-import app.infrastructure.integration.ConversionServiceImpl;
 import app.infrastructure.mapper.CelsiusMapper;
 import app.infrastructure.mapper.FahrenheitMapper;
 import app.infrastructure.mapper.KilometerMapper;
@@ -23,7 +26,17 @@ import jakarta.ws.rs.Path;
 @ApplicationScoped
 public class ServiceApi {
     @Inject
-    ConversionServiceImpl conversionService;
+    CelsiusFahrenheit celsiusFahrenheit;
+
+    @Inject
+    FahrenheitCelsius  fahrenheitCelsius;
+
+    @Inject
+    KilometerMilla  kilometerMilla;
+
+    @Inject
+    MillaKilometer   millaKilometer;
+
     @Inject
     KilometerMapper kilometerMapper;
 
@@ -40,27 +53,27 @@ public class ServiceApi {
     @Path("kilometer")
     public float get(@BeanParam KilometerQuery kilometerQuery) {
         KilometerCommand command = kilometerMapper.toKilometerCommand(kilometerQuery);
-        return  conversionService.conversionKilometerMilla(command);
+        return kilometerMilla.execute(command);
     }
 
     @GET
     @Path("celsius")
     public float getC(@BeanParam CelsiusQuery celsiusQuery) {
         CelsiusCommand celsiusCommand = celsiusMapper.toCommand(celsiusQuery);
-        return conversionService.conversionCelsiusFahrenheit(celsiusCommand);
+        return celsiusFahrenheit.execute(celsiusCommand);
     }
 
     @GET
     @Path("milla")
     public float getM(@BeanParam MillaQuery millaQuery) {
         MillaCommand millaCommand = millaMapper.toCommand(millaQuery);
-        return conversionService.conversionMillaKilometer(millaCommand);
+        return millaKilometer.execute(millaCommand);
     }
 
     @GET
     @Path("fahrenheit")
     public float getF(@BeanParam FahrenheitQuery fahrenheitQuery) {
         FahrenheitCommand fahrenheitCommand = fahrenheitMapper.toCommand(fahrenheitQuery);
-        return  conversionService.conversionFahrenheitCelsius(fahrenheitCommand);
+        return fahrenheitCelsius.execute(fahrenheitCommand);
     }
 }

@@ -6,7 +6,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 @ApplicationScoped
-public class kilometerMilla {
+public class KilometerMilla {
     @Inject
     ConversionService conversionService;
     public float execute(KilometerCommand command){
